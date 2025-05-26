@@ -1,304 +1,347 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
+import Icon from "@/components/ui/icon";
 
 const Index = () => {
-  const [blink, setBlink] = useState(true);
-  const [rotate, setRotate] = useState(0);
-  const [popupVisible, setPopupVisible] = useState(false);
-  const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
+  const [activeService, setActiveService] = useState(0);
 
-  useEffect(() => {
-    const blinkInterval = setInterval(() => {
-      setBlink((prev) => !prev);
-    }, 200);
+  const services = [
+    {
+      title: "Digital Strategy",
+      description: "Комплексная стратегия цифрового развития для вашего бренда",
+      features: ["Brand Identity", "User Research", "Market Analysis"],
+    },
+    {
+      title: "Web Development",
+      description: "Современные веб-решения с фокусом на производительность",
+      features: [
+        "React/TypeScript",
+        "Performance Optimization",
+        "Responsive Design",
+      ],
+    },
+    {
+      title: "Design Systems",
+      description: "Масштабируемые дизайн-системы для консистентного опыта",
+      features: ["Component Libraries", "Documentation", "Style Guides"],
+    },
+  ];
 
-    const rotateInterval = setInterval(() => {
-      setRotate((prev) => (prev + 15) % 360);
-    }, 50);
-
-    // Раздражающий попап через 3 секунды
-    const popupTimer = setTimeout(() => {
-      setPopupVisible(true);
-    }, 3000);
-
-    // Отслеживание мыши для раздражающих элементов
-    const handleMouseMove = (e: MouseEvent) => {
-      setMousePosition({ x: e.clientX, y: e.clientY });
-    };
-
-    window.addEventListener("mousemove", handleMouseMove);
-
-    return () => {
-      clearInterval(blinkInterval);
-      clearInterval(rotateInterval);
-      clearTimeout(popupTimer);
-      window.removeEventListener("mousemove", handleMouseMove);
-    };
-  }, []);
+  const projects = [
+    {
+      title: "FinTech Platform",
+      category: "Digital Banking",
+      year: "2024",
+      image:
+        "https://images.unsplash.com/photo-1551434678-e076c223a692?w=600&h=400&fit=crop",
+    },
+    {
+      title: "Healthcare Portal",
+      category: "Medical Tech",
+      year: "2024",
+      image:
+        "https://images.unsplash.com/photo-1576091160399-112ba8d25d1f?w=600&h=400&fit=crop",
+    },
+    {
+      title: "E-commerce Suite",
+      category: "Retail Tech",
+      year: "2023",
+      image:
+        "https://images.unsplash.com/photo-1563013544-824ae1b704d3?w=600&h=400&fit=crop",
+    },
+  ];
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-yellow-400 via-pink-500 to-green-400 animate-pulse relative overflow-x-auto">
-      {/* Раздражающий курсор-преследователь */}
-      <div
-        className="fixed w-8 h-8 bg-red-500 rounded-full animate-bounce pointer-events-none z-50"
-        style={{
-          left: mousePosition.x - 16,
-          top: mousePosition.y - 16,
-          transform: `rotate(${rotate}deg)`,
-        }}
-      >
-        😵‍💫
-      </div>
-
-      {/* Всплывающее окно */}
-      {popupVisible && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center">
-          <div className="bg-red-600 border-8 border-yellow-400 p-8 max-w-md animate-bounce">
-            <h3 className="text-3xl font-bold text-yellow-300 mb-4 animate-pulse">
-              🚨 ВНИМАНИЕ!!! 🚨
-            </h3>
-            <p className="text-white text-xl mb-4">
-              Вы выиграли 1000000 рублей!!! Нажмите ОК чтобы получить!!!
-            </p>
-            <div className="flex gap-2">
-              <button
-                onClick={() => setPopupVisible(false)}
-                className="bg-green-500 text-white px-4 py-2 font-bold animate-pulse"
+    <div className="min-h-screen bg-white text-neutral-900">
+      {/* Navigation */}
+      <nav className="fixed top-0 w-full bg-white/80 backdrop-blur-sm border-b border-neutral-200 z-50">
+        <div className="max-w-7xl mx-auto px-6 lg:px-8">
+          <div className="flex justify-between items-center h-16">
+            <div className="font-mono text-sm font-medium">STUDIO.DIGITAL</div>
+            <div className="hidden md:flex space-x-8 text-sm">
+              <a
+                href="#work"
+                className="text-neutral-600 hover:text-neutral-900 transition-colors"
               >
-                ОК!!!
-              </button>
-              <button
-                onClick={() => setPopupVisible(false)}
-                className="bg-blue-500 text-white px-4 py-2 font-bold animate-pulse"
+                Work
+              </a>
+              <a
+                href="#services"
+                className="text-neutral-600 hover:text-neutral-900 transition-colors"
               >
-                ОТМЕНА
-              </button>
+                Services
+              </a>
+              <a
+                href="#about"
+                className="text-neutral-600 hover:text-neutral-900 transition-colors"
+              >
+                About
+              </a>
+              <a
+                href="#contact"
+                className="text-neutral-600 hover:text-neutral-900 transition-colors"
+              >
+                Contact
+              </a>
             </div>
           </div>
         </div>
-      )}
+      </nav>
 
-      {/* Ужасный заголовок с еще больше эффектов */}
-      <div className="text-center pt-8 pb-4">
-        <h1
-          className={`text-7xl font-bold text-red-600 ${blink ? "opacity-100" : "opacity-0"} transition-opacity duration-100 animate-bounce`}
-          style={{
-            fontFamily: "Impact, Arial Black, sans-serif",
-            textShadow:
-              "5px 5px 0px #00ff00, 10px 10px 0px #0000ff, 15px 15px 0px #ff00ff",
-            transform: `rotate(${Math.sin(Date.now() / 200) * 20}deg) scale(${1 + Math.sin(Date.now() / 300) * 0.3})`,
-          }}
-        >
-          🔥💀 ДОБРО ПОЖАЛОВАТЬ НА МОЙ УЛЬТРА САЙТ!!! 💀🔥
-        </h1>
-        <marquee
-          className="text-3xl text-blue-600 font-bold bg-yellow-300 py-2 mt-4"
-          direction="right"
-          scrollamount="15"
-        >
-          ★★★ ЛУЧШИЙ САЙТ ВО ВСЕЛЕННОЙ!!! ЗАХОДИ КАЖДУЮ СЕКУНДУ!!! РАССКАЖИ
-          ДРУЗЬЯМ!!! ★★★
-        </marquee>
-        <marquee
-          className="text-2xl text-purple-600 font-bold bg-cyan-300 py-2"
-          direction="left"
-          scrollamount="20"
-        >
-          🎯 СКИДКА 999%!!! ТОЛЬКО СЕГОДНЯ!!! ЗВОНИ СЕЙЧАС!!! 🎯
-        </marquee>
-      </div>
-
-      {/* Основной контент с хаосом */}
-      <div className="container mx-auto px-4 relative">
-        {/* Левая колонка */}
-        <div
-          className="absolute left-4 top-20 w-80 bg-lime-400 border-8 border-red-500 p-4 transform hover:scale-125 transition-transform animate-pulse"
-          style={{
-            transform: `rotate(${rotate * 0.2}deg) skew(${Math.sin(Date.now() / 400) * 10}deg)`,
-          }}
-        >
-          <h2
-            className="text-4xl font-bold text-purple-800 underline mb-4 animate-bounce"
-            style={{ fontFamily: "Comic Sans MS, cursive" }}
-          >
-            О НАС!!! МЫ ЛУЧШИЕ!!!
-          </h2>
-          <div className="bg-pink-300 p-2 border-4 border-orange-500 mb-4">
-            <img
-              src="https://images.unsplash.com/photo-1588392382834-a891154bca4d?w=200&h=150&fit=crop&crop=center"
-              alt="Мигающая картинка"
-              className={`w-full h-20 object-cover ${blink ? "brightness-200 saturate-200" : "brightness-50"} transition-all duration-100`}
-            />
-          </div>
-          <p
-            className="text-orange-600 text-xl leading-tight mb-4"
-            style={{ fontFamily: "Times New Roman, serif" }}
-          >
-            🚀 Мы самая крутая компания в галактике!!! У нас есть ВСЁ что нужно
-            и в 100 раз больше!!! Звоните прямо сейчас и получите скидку 999%!!!
-            БЕСПЛАТНАЯ ДОСТАВКА НА МАРС!!!
-          </p>
-          <button className="mt-4 bg-red-600 text-yellow-300 px-8 py-4 text-2xl font-bold border-8 border-blue-500 hover:bg-green-500 animate-bounce transform hover:rotate-12">
-            НАЖМИ МЕНЯ СРОЧНО!!! 💥
-          </button>
-        </div>
-
-        {/* Центральный блок */}
-        <div className="text-center mt-32">
-          <div className="bg-cyan-300 border-8 border-purple-600 p-8 inline-block transform hover:rotate-6 transition-transform animate-pulse">
-            <h2
-              className="text-5xl text-red-700 mb-6 animate-bounce"
-              style={{ fontFamily: "Impact, sans-serif" }}
-            >
-              НАШИ МЕГА УСЛУГИ ⚡⚡⚡
-            </h2>
-            <ul className="text-left text-2xl space-y-3">
-              <li className="text-green-600 animate-pulse">
-                🌟💫 Делаем сайты за 30 секунд
-              </li>
-              <li className="text-blue-600 animate-pulse">
-                🌟💫 Продаем весь интернет
-              </li>
-              <li className="text-orange-600 animate-pulse">
-                🌟💫 Ремонтируем квантовые компьютеры
-              </li>
-              <li className="text-purple-600 animate-pulse">
-                🌟💫 Обучаем HTML за 5 минут
-              </li>
-              <li className="text-pink-600 animate-pulse">
-                🌟💫 Создаем искусственный интеллект
-              </li>
-              <li className="text-red-600 animate-pulse">
-                🌟💫 Продаем лицензию на дыхание
-              </li>
-            </ul>
-          </div>
-        </div>
-
-        {/* Правая колонка */}
-        <div className="absolute right-4 top-40 w-80 bg-pink-400 border-8 border-green-500 p-4 animate-bounce transform hover:scale-110">
-          <h2
-            className="text-4xl font-bold text-blue-800 mb-4 animate-pulse"
-            style={{ fontFamily: "Arial Black, sans-serif" }}
-          >
-            КОНТАКТЫ!!! ЗВОНИ!!!
-          </h2>
-          <div className="space-y-4 text-xl">
-            <p className="text-red-600 animate-bounce">
-              📞 Телефон: 8-800-555-35-35
-            </p>
-            <p className="text-green-600 animate-bounce">
-              📧 Email: super@best-site-ever.ru
-            </p>
-            <p className="text-blue-600 animate-bounce">
-              🏠 Адрес: ул. Интернетная, д. 999
-            </p>
-            <p className="text-purple-600 animate-bounce">
-              📱 WhatsApp: +7-999-123-45-67
-            </p>
-            <p className="text-orange-600 animate-bounce">
-              💬 Telegram: @best_site_ever
-            </p>
-          </div>
-          <div className="mt-4 bg-yellow-400 p-4 border-8 border-red-500 animate-pulse">
-            <p className="text-purple-700 font-bold text-center text-2xl">
-              РАБОТАЕМ 25/8/366!!! БЕЗ ВЫХОДНЫХ!!!
-            </p>
-          </div>
-        </div>
-
-        {/* Блок с мигающими картинками */}
-        <div className="mt-96 mb-8 text-center">
-          <h2 className="text-5xl font-bold text-red-600 mb-6 animate-bounce">
-            НАША ГАЛЕРЕЯ!!! 📸✨
-          </h2>
-          <div className="flex justify-center gap-4 flex-wrap">
-            <img
-              src="https://images.unsplash.com/photo-1560472354-b33ff0c44a43?w=150&h=150&fit=crop"
-              className={`w-32 h-32 border-8 border-yellow-500 ${blink ? "brightness-200 hue-rotate-180" : "brightness-50"} transition-all duration-100 hover:scale-150`}
-            />
-            <img
-              src="https://images.unsplash.com/photo-1498050108023-c5249f4df085?w=150&h=150&fit=crop"
-              className={`w-32 h-32 border-8 border-red-500 ${!blink ? "brightness-200 hue-rotate-90" : "brightness-50"} transition-all duration-100 hover:scale-150`}
-            />
-            <img
-              src="https://images.unsplash.com/photo-1504384308090-c894fdcc538d?w=150&h=150&fit=crop"
-              className={`w-32 h-32 border-8 border-green-500 ${blink ? "brightness-200 hue-rotate-270" : "brightness-50"} transition-all duration-100 hover:scale-150`}
-            />
-          </div>
-        </div>
-
-        {/* Нижний блок с отзывами */}
-        <div className="mt-8 bg-orange-300 border-8 border-cyan-500 p-8 mx-auto max-w-5xl transform rotate-2 hover:rotate-3 transition-transform">
-          <h2
-            className="text-5xl text-center text-green-700 mb-8 animate-pulse"
-            style={{ fontFamily: "Comic Sans MS, cursive" }}
-          >
-            ОТЗЫВЫ НАШИХ СУПЕР КЛИЕНТОВ!!! ⭐⭐⭐⭐⭐
-          </h2>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-            <div className="bg-lime-200 p-6 border-8 border-red-400 transform -rotate-3 hover:rotate-3 transition-transform animate-pulse">
-              <p className="text-purple-600 text-xl font-bold">
-                "ЛУЧШИЙ САЙТ В ИСТОРИИ ЧЕЛОВЕЧЕСТВА!!! РЕКОМЕНДУЮ ВСЕМ НА
-                ПЛАНЕТЕ!!!"
-              </p>
-              <p className="text-blue-600 font-bold mt-3">
-                - Василий К., CEO Газпрома
+      {/* Hero Section */}
+      <section className="pt-32 pb-20 px-6 lg:px-8">
+        <div className="max-w-7xl mx-auto">
+          <div className="grid grid-cols-12 gap-6 lg:gap-8">
+            <div className="col-span-12 lg:col-span-8">
+              <h1 className="text-4xl lg:text-6xl xl:text-7xl font-light leading-[0.9] tracking-tight mb-8">
+                Создаем цифровые
+                <br />
+                продукты нового
+                <br />
+                <span className="italic">поколения</span>
+              </h1>
+              <p className="text-lg lg:text-xl text-neutral-600 max-w-2xl leading-relaxed">
+                Мы специализируемся на разработке современных веб-приложений,
+                дизайн-систем и цифровых стратегий для амбициозных компаний.
               </p>
             </div>
-            <div className="bg-cyan-200 p-6 border-8 border-yellow-500 transform rotate-3 hover:-rotate-3 transition-transform animate-pulse">
-              <p className="text-red-600 text-xl font-bold">
-                "НЕВЕРОЯТНО КРАСИВО И УДОБНО!!! 100 ИЗ 10!!! ЛУЧШЕ ЧЕМ
-                GOOGLE!!!"
-              </p>
-              <p className="text-green-600 font-bold mt-3">
-                - Мария П., Директор NASA
-              </p>
-            </div>
-            <div className="bg-pink-200 p-6 border-8 border-blue-500 transform -rotate-1 hover:rotate-2 transition-transform animate-pulse">
-              <p className="text-orange-600 text-xl font-bold">
-                "ЭТОТ САЙТ ИЗМЕНИЛ МОЮ ЖИЗНЬ!!! ТЕПЕРЬ Я МИЛЛИОНЕР!!!"
-              </p>
-              <p className="text-purple-600 font-bold mt-3">
-                - Билл Г., Microsoft
-              </p>
+            <div className="col-span-12 lg:col-span-4 lg:pt-16">
+              <div className="space-y-6">
+                <div className="border-l-2 border-neutral-900 pl-4">
+                  <div className="text-sm text-neutral-500 uppercase tracking-wide mb-1">
+                    Founded
+                  </div>
+                  <div className="font-mono">2020</div>
+                </div>
+                <div className="border-l-2 border-neutral-200 pl-4">
+                  <div className="text-sm text-neutral-500 uppercase tracking-wide mb-1">
+                    Projects
+                  </div>
+                  <div className="font-mono">150+</div>
+                </div>
+                <div className="border-l-2 border-neutral-200 pl-4">
+                  <div className="text-sm text-neutral-500 uppercase tracking-wide mb-1">
+                    Clients
+                  </div>
+                  <div className="font-mono">85+</div>
+                </div>
+              </div>
             </div>
           </div>
         </div>
-      </div>
+      </section>
 
-      {/* Плавающие раздражающие элементы */}
-      <div className="fixed top-1/4 left-1/2 bg-red-500 text-yellow-300 p-6 border-8 border-blue-500 animate-bounce transform -translate-x-1/2 rotate-12 hover:rotate-45 transition-transform">
-        <p className="font-bold text-2xl">💥 МЕГА АКЦИЯ! 💥</p>
-        <p className="text-xl">Скидка 9999%!</p>
-        <p className="text-lg">Только сегодня!!!</p>
-      </div>
+      {/* Selected Work */}
+      <section id="work" className="py-20 px-6 lg:px-8 bg-neutral-50">
+        <div className="max-w-7xl mx-auto">
+          <div className="grid grid-cols-12 gap-6 lg:gap-8 mb-16">
+            <div className="col-span-12 lg:col-span-3">
+              <h2 className="text-sm uppercase tracking-wide text-neutral-500 mb-4">
+                Selected Work
+              </h2>
+            </div>
+            <div className="col-span-12 lg:col-span-9">
+              <h3 className="text-3xl lg:text-4xl font-light leading-tight">
+                Проекты, которые определяют будущее цифрового взаимодействия
+              </h3>
+            </div>
+          </div>
 
-      <div className="fixed top-1/3 right-8 bg-green-500 text-purple-300 p-6 border-8 border-pink-500 animate-spin hover:animate-bounce">
-        <p className="font-bold text-2xl">🎉 ХИТ! 🎉</p>
-        <p className="text-xl">НОВИНКА!</p>
-      </div>
+          <div className="space-y-16">
+            {projects.map((project, index) => (
+              <div
+                key={index}
+                className="grid grid-cols-12 gap-6 lg:gap-8 group"
+              >
+                <div className="col-span-12 lg:col-span-8">
+                  <div className="aspect-[3/2] bg-neutral-200 overflow-hidden">
+                    <img
+                      src={project.image}
+                      alt={project.title}
+                      className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
+                    />
+                  </div>
+                </div>
+                <div className="col-span-12 lg:col-span-4 lg:pt-8">
+                  <div className="space-y-4">
+                    <div>
+                      <div className="text-sm text-neutral-500 uppercase tracking-wide mb-2">
+                        {project.category} / {project.year}
+                      </div>
+                      <h4 className="text-2xl font-light">{project.title}</h4>
+                    </div>
+                    <button className="flex items-center space-x-2 text-sm hover:text-neutral-600 transition-colors">
+                      <span>View Case Study</span>
+                      <Icon name="ArrowUpRight" size={16} />
+                    </button>
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
 
-      <div className="fixed bottom-1/3 left-8 bg-purple-500 text-yellow-300 p-4 border-8 border-orange-500 animate-pulse transform hover:scale-125">
-        <p className="font-bold text-xl">🚀 КОСМОС! 🚀</p>
-        <p>БЕСПЛАТНО!</p>
-      </div>
+      {/* Services */}
+      <section id="services" className="py-20 px-6 lg:px-8">
+        <div className="max-w-7xl mx-auto">
+          <div className="grid grid-cols-12 gap-6 lg:gap-8 mb-16">
+            <div className="col-span-12 lg:col-span-3">
+              <h2 className="text-sm uppercase tracking-wide text-neutral-500 mb-4">
+                Services
+              </h2>
+            </div>
+            <div className="col-span-12 lg:col-span-9">
+              <h3 className="text-3xl lg:text-4xl font-light leading-tight mb-8">
+                Комплексный подход к цифровой трансформации
+              </h3>
+            </div>
+          </div>
 
-      {/* Футер */}
-      <footer className="mt-20 bg-purple-600 text-yellow-300 py-12 text-center border-t-8 border-red-500">
-        <marquee className="text-3xl font-bold mb-6" scrollamount="25">
-          © 2024 ЛУЧШИЙ САЙТ ВО ВСЕХ ВСЕЛЕННЫХ!!! ВСЕ ПРАВА ЗАЩИЩЕНЫ
-          ЛАЗЕРАМИ!!!
-        </marquee>
-        <marquee
-          className="text-2xl font-bold mb-4"
-          direction="right"
-          scrollamount="15"
-        >
-          СОЗДАНО С ЛЮБОВЬЮ И БЕЗ ДИЗАЙНЕРА!!! ТЕПЕРЬ ЕЩЕ ХУЖЕ!!! 😵‍💫🎨💀
-        </marquee>
-        <p className="text-cyan-300 text-2xl animate-pulse">
-          Если у вас болят глаза - это нормально! 🤪
-        </p>
+          <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+            {services.map((service, index) => (
+              <div
+                key={index}
+                className={`p-8 border cursor-pointer transition-all duration-300 ${
+                  activeService === index
+                    ? "border-neutral-900 bg-neutral-900 text-white"
+                    : "border-neutral-200 hover:border-neutral-300"
+                }`}
+                onClick={() => setActiveService(index)}
+              >
+                <div className="space-y-6">
+                  <div>
+                    <h4 className="text-xl font-light mb-3">{service.title}</h4>
+                    <p
+                      className={`text-sm leading-relaxed ${
+                        activeService === index
+                          ? "text-neutral-300"
+                          : "text-neutral-600"
+                      }`}
+                    >
+                      {service.description}
+                    </p>
+                  </div>
+                  <div className="space-y-2">
+                    {service.features.map((feature, idx) => (
+                      <div
+                        key={idx}
+                        className={`text-xs uppercase tracking-wide ${
+                          activeService === index
+                            ? "text-neutral-400"
+                            : "text-neutral-500"
+                        }`}
+                      >
+                        {feature}
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* About */}
+      <section id="about" className="py-20 px-6 lg:px-8 bg-neutral-50">
+        <div className="max-w-7xl mx-auto">
+          <div className="grid grid-cols-12 gap-6 lg:gap-8">
+            <div className="col-span-12 lg:col-span-6">
+              <h2 className="text-sm uppercase tracking-wide text-neutral-500 mb-8">
+                About Studio
+              </h2>
+              <h3 className="text-3xl lg:text-4xl font-light leading-tight mb-8">
+                Мы верим в силу хорошего дизайна и чистого кода
+              </h3>
+              <div className="space-y-6 text-neutral-600 leading-relaxed">
+                <p>
+                  Наша студия объединяет дизайнеров, разработчиков и стратегов,
+                  которые создают цифровые продукты с безупречным
+                  пользовательским опытом.
+                </p>
+                <p>
+                  Мы не просто следуем трендам — мы создаем решения, которые
+                  работают долгие годы и масштабируются вместе с вашим бизнесом.
+                </p>
+              </div>
+            </div>
+            <div className="col-span-12 lg:col-span-6">
+              <div className="aspect-[4/3] bg-neutral-200"></div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Contact */}
+      <section id="contact" className="py-20 px-6 lg:px-8">
+        <div className="max-w-7xl mx-auto">
+          <div className="grid grid-cols-12 gap-6 lg:gap-8">
+            <div className="col-span-12 lg:col-span-6">
+              <h2 className="text-sm uppercase tracking-wide text-neutral-500 mb-8">
+                Let's Talk
+              </h2>
+              <h3 className="text-3xl lg:text-4xl font-light leading-tight mb-8">
+                Готовы создать что-то выдающееся?
+              </h3>
+              <div className="space-y-6">
+                <div>
+                  <div className="text-sm text-neutral-500 uppercase tracking-wide mb-1">
+                    Email
+                  </div>
+                  <a
+                    href="mailto:hello@studio.digital"
+                    className="font-mono hover:text-neutral-600 transition-colors"
+                  >
+                    hello@studio.digital
+                  </a>
+                </div>
+                <div>
+                  <div className="text-sm text-neutral-500 uppercase tracking-wide mb-1">
+                    Phone
+                  </div>
+                  <a
+                    href="tel:+74951234567"
+                    className="font-mono hover:text-neutral-600 transition-colors"
+                  >
+                    +7 495 123 45 67
+                  </a>
+                </div>
+              </div>
+            </div>
+            <div className="col-span-12 lg:col-span-6 lg:pt-16">
+              <div className="space-y-4">
+                <div className="text-sm text-neutral-500 uppercase tracking-wide">
+                  Moscow, Russia
+                </div>
+                <div className="text-sm text-neutral-500">
+                  Работаем по будням
+                  <br />
+                  10:00 — 19:00 MSK
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Footer */}
+      <footer className="border-t border-neutral-200 py-12 px-6 lg:px-8">
+        <div className="max-w-7xl mx-auto">
+          <div className="flex flex-col lg:flex-row justify-between items-start lg:items-center space-y-4 lg:space-y-0">
+            <div className="font-mono text-sm">© 2024 Studio Digital</div>
+            <div className="flex space-x-6 text-sm text-neutral-500">
+              <a href="#" className="hover:text-neutral-900 transition-colors">
+                Privacy
+              </a>
+              <a href="#" className="hover:text-neutral-900 transition-colors">
+                Terms
+              </a>
+              <a href="#" className="hover:text-neutral-900 transition-colors">
+                Careers
+              </a>
+            </div>
+          </div>
+        </div>
       </footer>
     </div>
   );
